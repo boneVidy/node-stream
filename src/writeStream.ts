@@ -18,7 +18,7 @@ type Cache = {
   encoding: string;
   callback: Function;
 };
-export class WriteStream<T extends Object | string> extends EventEmitter {
+export class WriteStream<T extends Object | string = Object> extends EventEmitter {
   private len = 0;
   private pos = 0;
   private encoding = "utf8";

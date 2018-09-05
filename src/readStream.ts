@@ -1,5 +1,7 @@
 import { EventEmitter } from "events";
 import { PathLike, open, read, close } from "fs";
+import { WriteStream } from "./writeStream";
+
 type Options = {
   flags?: string;
   encoding?: string;
@@ -86,7 +88,7 @@ export class ReadStream<T extends Object | string> extends EventEmitter {
       this.pos,
       (err, bytesRead, buffer) => {
         if (err) {
-          return this.emit("err");
+          return this.emit("error");
         }
         if (!bytesRead) {
           return this.emit("end");
@@ -127,6 +129,25 @@ export class ReadStream<T extends Object | string> extends EventEmitter {
     }
     close(this.fd, () => {
       this.emit("close");
+    });
+  }
+
+
+  /**
+   * pipe
+   */
+  public pipe(dest: WriteStream) {
+    this.on('data', (data) => {
+      const flag = dest.write(data);
+      if (!flag) this.pause();
+    });
+
+    dest.on('drain', () => {
+      this.resume();
+    });
+
+    this.once('end', () => {
+      this.destroy();
     });
   }
 }

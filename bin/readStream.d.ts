@@ -1,6 +1,7 @@
 /// <reference types="node" />
 import { EventEmitter } from "events";
 import { PathLike } from "fs";
+import { WriteStream } from "./writeStream";
 declare type Options = {
     flags?: string;
     encoding?: string;
@@ -39,6 +40,10 @@ export declare class ReadStream<T extends Object | string> extends EventEmitter 
      */
     resume(): void;
     destroy(): void;
+    /**
+     * pipe
+     */
+    pipe(dest: WriteStream): void;
 }
 export {};
 //# sourceMappingURL=readStream.d.ts.map

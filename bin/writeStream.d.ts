@@ -12,7 +12,7 @@ declare type Options = {
     highWaterMark?: number;
 };
 export declare type WriteStreamOptions<T> = T extends undefined ? {} : T extends Object ? Options : string;
-export declare class WriteStream<T extends Object | string> extends EventEmitter {
+export declare class WriteStream<T extends Object | string = Object> extends EventEmitter {
     private len;
     private pos;
     private encoding;
