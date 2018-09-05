@@ -1,6 +1,6 @@
 /// <reference types="node" />
-import { PathLike } from 'fs';
-import { EventEmitter } from 'events';
+import { PathLike } from "fs";
+import { EventEmitter } from "events";
 declare type Options = {
     flags?: string;
     encoding?: string;
@@ -32,6 +32,7 @@ export declare class WriteStream<T extends Object | string> extends EventEmitter
     private _write;
     open(): void;
     destroy(): any;
+    end(): void;
     close(): void;
 }
 export {};

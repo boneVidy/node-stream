@@ -30,18 +30,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
             var _this = _super.call(this) || this;
             _this.len = 0;
             _this.pos = 0;
-            _this.encoding = 'utf8';
+            _this.encoding = "utf8";
             _this.start = 0;
             _this.autoClose = true;
-            _this.flags = 'w';
+            _this.flags = "w";
             _this.buffer = [];
             _this.path = path;
             options = options || {};
-            _this.flags = options.flags || 'w';
+            _this.flags = options.flags || "w";
             _this.mode = options.mode || 438;
             _this.highwaterMark = options.highWaterMark || 16 * 1024;
             _this.start = options.start || 0;
-            _this.encoding = options.encoding || 'utf8';
+            _this.encoding = options.encoding || "utf8";
             _this.autoClose = options.autoClose || true;
             _this.needDrain = false;
             _this.writing = false;
@@ -55,7 +55,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
             var _this = this;
             if (encoding === void 0) { encoding = this.encoding; }
             if (callback === void 0) { callback = function () { }; }
-            chunk = Buffer.isBuffer(chunk) ? chunk : typeof chunk === 'string' ? Buffer.from(chunk) : Buffer.from([chunk]);
+            chunk = Buffer.isBuffer(chunk)
+                ? chunk
+                : typeof chunk === "string"
+                    ? Buffer.from(chunk)
+                    : Buffer.from([chunk]);
             this.len += chunk.length;
             this.needDrain = this.highwaterMark <= this.len;
             if (this.writing) {
@@ -86,13 +90,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
             else {
                 this.writing = false;
                 this.needDrain = false;
-                this.emit('drain');
+                this.emit("drain");
             }
         };
         WriteStream.prototype._write = function (chunk, encoding, callback) {
             var _this = this;
-            if (typeof this.fd !== 'number') {
-                return this.once('open', function () {
+            if (typeof this.fd !== "number") {
+                return this.once("open", function () {
                     _this._write(chunk, encoding, callback);
                 });
             }
@@ -111,23 +115,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
             var _this = this;
             fs_1.default.open(this.path, this.flags, this.mode, function (err, fd) {
                 if (err) {
-                    _this.emit('error');
+                    _this.emit("error");
                     _this.destroy();
                     return;
                 }
                 _this.fd = fd;
-                _this.emit('open');
+                _this.emit("open");
             });
         };
         WriteStream.prototype.destroy = function () {
-            if (typeof this.fd !== 'number') {
+            if (typeof this.fd !== "number") {
+                this.close();
+            }
+        };
+        WriteStream.prototype.end = function () {
+            if (this.autoClose) {
                 this.close();
             }
         };
         WriteStream.prototype.close = function () {
             var _this = this;
             fs_1.default.close(this.fd, function (err) {
-                _this.emit('close');
+                _this.emit("close");
             });
         };
         return WriteStream;
